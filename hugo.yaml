@@ -1,0 +1,142 @@
+# ===== 站点基本信息（这几项最常改）=====
+baseURL: https://kuroi-sakuya.github.io/
+languageCode: zh-cn
+theme: hugo-theme-stack
+title: Kuroi-Sakuya            # ← 站点标题，改成你想要的名字
+copyright: Kuroi-Sakuya        # ← 页脚版权署名
+
+DefaultContentLanguage: zh-cn
+hasCJKLanguage: true           # 中文分词/字数统计需要
+
+services:
+    disqus:
+        shortname:
+    googleAnalytics:
+        id:
+
+pagination:
+    pagerSize: 5
+
+permalinks:
+    post: /p/:slug/
+    page: /:slug/
+
+params:
+    mainSections:
+        - post
+    featuredImageField: image
+    rssFullContent: true
+    favicon: /favicon.png
+
+    footer:
+        since: 2026
+        customText:
+
+    dateFormat:
+        published: 2006-01-02
+        lastUpdated: 2006-01-02 15:04 MST
+
+    # ===== 侧边栏（标题下的小字 / 头像）=====
+    sidebar:
+        emoji: 🌙
+        subtitle: 记录生活、想法，以及热爱的一切    # ← 侧边栏副标题
+        avatar:
+            enabled: true
+            local: false
+            # 默认用你的 GitHub 头像；想用本地图就把 local 设为 true，
+            # 把图片放到 assets/img/avatar.png 并把 src 改成 img/avatar.png
+            src: https://avatars.githubusercontent.com/u/62644557?v=4
+
+    article:
+        math: false
+        toc: true
+        readingTime: true
+        license:
+            enabled: false
+            default: Licensed under CC BY-NC-SA 4.0
+
+    # 评论默认关闭；将来想开（推荐 giscus，基于 GitHub Discussions）再配
+    comments:
+        enabled: false
+        provider: giscus
+
+    widgets:
+        homepage:
+            - type: search
+            - type: archives
+              params:
+                  limit: 5
+            - type: categories
+              params:
+                  limit: 10
+            - type: tag-cloud
+              params:
+                  limit: 10
+        page:
+            - type: toc
+
+    opengraph:
+        twitter:
+            site:
+            card: summary_large_image
+
+    defaultImage:
+        opengraph:
+            enabled: false
+            local: false
+            src:
+
+    colorScheme:
+        toggle: true
+        default: auto      # 自动跟随系统明暗
+
+    imageProcessing:
+        cover:
+            enabled: true
+        content:
+            enabled: true
+
+# ===== 菜单 =====
+# 主页/关于/归档/搜索/链接 这些菜单项写在各自内容文件的 front matter 里，
+# 这里只加「指向纪念站」的外链。
+menu:
+    main:
+        - identifier: memorial
+          name: 小鱼纪念站
+          url: /memorial/
+          weight: -40
+          params:
+              icon: link
+    social:
+        - identifier: github
+          name: GitHub
+          url: https://github.com/Kuroi-Sakuya
+          params:
+              icon: brand-github
+
+related:
+    includeNewer: true
+    threshold: 60
+    toLower: false
+    indices:
+        - name: tags
+          weight: 100
+        - name: categories
+          weight: 200
+
+markup:
+    goldmark:
+        renderer:
+            unsafe: true        # 允许 Markdown 里写 HTML
+    tableOfContents:
+        endLevel: 4
+        ordered: true
+        startLevel: 2
+    highlight:
+        noClasses: false
+        codeFences: true
+        guessSyntax: true
+        lineNoStart: 1
+        lineNos: true
+        lineNumbersInTable: true
+        tabWidth: 4

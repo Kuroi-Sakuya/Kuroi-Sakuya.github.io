@@ -1,0 +1,8 @@
+# Hugo 构建产物（由 GitHub Actions 自动生成，无需提交）
+/public/
+/resources/_gen/
+.hugo_build.lock
+
+# 系统/编辑器
+.DS_Store
+Thumbs.db
