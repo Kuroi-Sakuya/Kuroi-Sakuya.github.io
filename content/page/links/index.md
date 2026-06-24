@@ -8,10 +8,6 @@ menu:
             icon: link
 comments: false
 links:
-  - title: 小鱼纪念站
-    description: 「你也喜欢小鱼吗」—— 一段被珍藏的回忆。
-    website: /memorial/
-    image: /memorial/img/logo1.jpg
   - title: GitHub
     description: 我的 GitHub 主页。
     website: https://github.com/Kuroi-Sakuya

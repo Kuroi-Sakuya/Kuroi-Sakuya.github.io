@@ -30,7 +30,7 @@ params:
 
     footer:
         since: 2026
-        customText:
+        customText: 为你收集日落的云朵
 
     dateFormat:
         published: 2006-01-02
@@ -97,16 +97,9 @@ params:
             enabled: true
 
 # ===== 菜单 =====
-# 主页/关于/归档/搜索/链接 这些菜单项写在各自内容文件的 front matter 里，
-# 这里只加「指向纪念站」的外链。
+# 主页/关于/归档/搜索/链接 这些菜单项写在各自内容文件的 front matter 里。
 menu:
-    main:
-        - identifier: memorial
-          name: 小鱼纪念站
-          url: /memorial/
-          weight: -40
-          params:
-              icon: link
+    main: []
     social:
         - identifier: github
           name: GitHub
