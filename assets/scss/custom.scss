@@ -1,0 +1,95 @@
+/* =========================================================
+   咲夜 · 花开的夜   —   自定义样式
+   浅色 = 日落樱花   |   深色 = 雨夜霓虹
+   想整体调观感，改这个文件就行（不动主题本体，升级不冲突）
+   ========================================================= */
+
+/* ---------- 字体：思源宋体 + Source Serif 4（衬线、好读、文气）---------- */
+:root {
+    --base-font-family: "Source Serif 4", "Noto Serif SC", "Songti SC",
+        "Noto Serif CJK SC", "Source Han Serif SC", Georgia, "Times New Roman", serif;
+    --article-font-family: var(--base-font-family);
+}
+
+/* ---------- 浅色：日落樱花 ---------- */
+:root {
+    --body-background: #fcf5f2;          /* 暖樱纸底 */
+    --accent-color: #df6d8e;             /* 樱花玫瑰 */
+    --accent-color-darker: #c64f76;
+    --accent-color-text: #ffffff;
+    --body-text-color: #5a5560;
+
+    --card-background: #ffffff;
+    --card-background-selected: #fce9ee;
+    --card-text-color-main: #2b2730;
+    --card-text-color-secondary: #6b6670;
+    --card-text-color-tertiary: #8a8590;
+    --card-border-radius: 16px;          /* 更圆润的卡片 */
+
+    --tag-border-radius: 999px;          /* 胶囊标签 */
+    --link-background-color: 223, 109, 142;   /* 正文链接高亮=主色 */
+    --blockquote-background-color: #fdeef2;
+
+    /* 柔和暖色阴影 */
+    --shadow-l1: 0 4px 14px rgba(199, 79, 118, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+    --shadow-l2: 0 10px 30px rgba(199, 79, 118, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+    --shadow-l3: 0 10px 30px rgba(199, 79, 118, 0.10), 0 2px 8px rgba(0, 0, 0, 0.05);
+    --shadow-l4: 0 24px 48px rgba(199, 79, 118, 0.12), 0 8px 16px rgba(0, 0, 0, 0.05);
+}
+
+/* ---------- 深色：雨夜霓虹 ---------- */
+:root[data-scheme="dark"] {
+    --body-background: #15161f;          /* 深靛夜 */
+    --accent-color: #ff8fb0;             /* 霓虹樱粉 */
+    --accent-color-darker: #ff6f9c;
+    --accent-color-text: #1a1320;
+    --body-text-color: rgba(255, 255, 255, 0.78);
+
+    --card-background: #1e1f2b;
+    --card-background-selected: #2a2c3b;
+    --card-text-color-main: rgba(255, 255, 255, 0.92);
+    --card-text-color-secondary: rgba(255, 255, 255, 0.66);
+    --card-text-color-tertiary: rgba(255, 255, 255, 0.50);
+
+    --link-background-color: 255, 143, 176;
+    --blockquote-background-color: #20222e;
+
+    --shadow-l1: 0 4px 14px rgba(0, 0, 0, 0.35);
+    --shadow-l2: 0 10px 30px rgba(0, 0, 0, 0.45);
+    --shadow-l3: 0 10px 30px rgba(0, 0, 0, 0.50);
+    --shadow-l4: 0 24px 48px rgba(0, 0, 0, 0.55);
+}
+
+/* ---------- 细节润色 ---------- */
+html { scroll-behavior: smooth; }
+
+::selection {
+    background: var(--accent-color);
+    color: var(--accent-color-text);
+}
+
+/* 头像：柔光环 + hover 轻微放大 */
+.site-avatar img {
+    box-shadow: 0 0 0 4px rgba(223, 109, 142, 0.18);
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+.site-avatar img:hover {
+    transform: scale(1.04);
+    box-shadow: 0 0 0 6px rgba(223, 109, 142, 0.28);
+}
+
+/* 文章卡片：hover 轻微上浮 */
+.article-list article {
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+.article-list article:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-l4);
+}
+
+/* 正文图片圆角；引用块左条用主色 */
+.article-content img { border-radius: 12px; }
+.article-content blockquote { border-left-color: var(--accent-color); }
+
+/* 链接过渡更顺滑 */
+a { transition: color .2s ease, background-size .2s ease, opacity .2s ease; }

@@ -2,6 +2,7 @@
 /public/
 /resources/_gen/
 .hugo_build.lock
+/assets/jsconfig.json
 
 # 系统/编辑器
 .DS_Store
