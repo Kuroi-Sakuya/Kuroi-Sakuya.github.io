@@ -17,7 +17,7 @@ permissions:
 # 同一时间只跑一次部署，不取消进行中的运行
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 defaults:
   run:

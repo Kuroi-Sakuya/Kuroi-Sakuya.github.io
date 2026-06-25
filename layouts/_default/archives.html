@@ -1,0 +1,26 @@
+{{ define "body-class" }}template-archives{{ end }}
+
+{{ define "main" }}
+    <h1 class="page-title">{{ .Title }}</h1>
+
+    {{- $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections -}}
+    {{- $pages = where $pages "Params.hidden" "!=" true -}}
+
+    {{- if $pages -}}
+        <div class="timeline">
+            {{- range $pages.GroupByDate "2006" -}}
+                <div class="tl-year">{{ .Key }}</div>
+                {{- range .Pages -}}
+                    <div class="tl-item">
+                        <time class="tl-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "01-02" }}</time>
+                        <a class="tl-title" href="{{ .RelPermalink }}">{{ .Title }}</a>
+                    </div>
+                {{- end -}}
+            {{- end -}}
+        </div>
+    {{- else -}}
+        <p class="list-empty">还没有文章，故事正在酝酿中……</p>
+    {{- end -}}
+
+    {{ partialCached "footer/footer" . }}
+{{ end }}
