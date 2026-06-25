@@ -1,12 +1,12 @@
 /*
  * 自定义前端脚本（Hugo 会自动编译加载，见主题 footer/components/script.html）
- * 1) Hero 打字机：随机诗词 ↔ 签名
+ * 1) Hero 打字机：随机诗词（一言·诗词 API，每次不同）↔ 签名
  * 2) 文章阅读进度条
  * 3) 滚动渐显
  * 4) 留言板（Waline）滚动到可视区再懒加载
  */
 
-/* ---------- 1) Hero 打字机 ---------- */
+/* ---------- 1) Hero 打字机：每次调 API 取不同古诗词 ---------- */
 (function heroTyper() {
     const el = document.getElementById("hero-typer");
     if (!el) return;
@@ -18,64 +18,64 @@
         "此心安处是吾乡",
         "何当共剪西窗烛，却话巴山夜雨时",
         "众里寻他千百度，蓦然回首，那人却在灯火阑珊处",
+        "山有木兮木有枝，心悦君兮君不知",
+        "落霞与孤鹜齐飞，秋水共长天一色",
+        "人生代代无穷已，江月年年望相似",
+        "云想衣裳花想容，春风拂槛露华浓",
+        "海上生明月，天涯共此时",
+        "枕上诗书闲处好，门前风景雨来佳",
+        "此情可待成追忆，只是当时已惘然",
     ];
-    let poem = FALLBACK[Math.floor(Math.random() * FALLBACK.length)];
+    const randLine = () => FALLBACK[Math.floor(Math.random() * FALLBACK.length)];
 
-    // 动态加载「今日诗词」SDK
-    (function loadSDK() {
-        const w = window as any;
-        if (w.jinrishici) return;
-        const s = document.createElement("script");
-        s.src = "https://sdk.jinrishici.com/v2/browser/jinrishici.js";
-        s.async = true;
-        document.head.appendChild(s);
+    // 一言·诗词分类（c=i），支持 CORS、国内可达、每次返回不同诗句
+    async function fetchPoem(): Promise<string> {
+        try {
+            const res = await fetch("https://v1.hitokoto.cn/?c=i&encode=json", { cache: "no-store" });
+            const data = await res.json();
+            const s = data && typeof data.hitokoto === "string" ? data.hitokoto.trim() : "";
+            return s || randLine();
+        } catch (e) {
+            return randLine();
+        }
+    }
+
+    const TYPE = 120, ERASE = 55, HOLD = 2200, GAP = 600;
+
+    function typeText(text: string): Promise<void> {
+        return new Promise((resolve) => {
+            let i = 0;
+            (function step() {
+                el.textContent = text.slice(0, ++i);
+                if (i < text.length) setTimeout(step, TYPE);
+                else setTimeout(resolve, HOLD);
+            })();
+        });
+    }
+    function eraseText(): Promise<void> {
+        return new Promise((resolve) => {
+            let i = (el.textContent || "").length;
+            const full = el.textContent || "";
+            (function step() {
+                i -= 1;
+                el.textContent = full.slice(0, i < 0 ? 0 : i);
+                if (i > 0) setTimeout(step, ERASE);
+                else setTimeout(resolve, GAP);
+            })();
+        });
+    }
+
+    (async function loop() {
+        // 无限循环：每轮取一句新诗词 → 打字 → 删除 → 签名 → 删除
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+            const poem = await fetchPoem();
+            await typeText(poem);
+            await eraseText();
+            await typeText(SIGNATURE);
+            await eraseText();
+        }
     })();
-
-    function fetchPoem(cb: (s: string) => void) {
-        const w = window as any;
-        if (w.jinrishici && typeof w.jinrishici.load === "function") {
-            try {
-                w.jinrishici.load(
-                    (r: any) => cb((r && r.data && r.data.content) || poem),
-                    () => cb(poem)
-                );
-                return;
-            } catch (e) { /* fall through */ }
-        }
-        cb(poem);
-    }
-
-    const TYPE = 120, ERASE = 55, HOLD = 2000, GAP = 550;
-    let showSignature = false;
-
-    function type(text: string, done: () => void) {
-        let i = 0;
-        (function step() {
-            el.textContent = text.slice(0, ++i);
-            if (i < text.length) setTimeout(step, TYPE);
-            else setTimeout(done, HOLD);
-        })();
-    }
-    function erase(done: () => void) {
-        const text = el.textContent || "";
-        let i = text.length;
-        (function step() {
-            el.textContent = text.slice(0, i-- > 0 ? i : 0);
-            if (i > 0) setTimeout(step, ERASE);
-            else setTimeout(done, GAP);
-        })();
-    }
-    function loop() {
-        if (showSignature) {
-            type(SIGNATURE, () => erase(() => { showSignature = false; loop(); }));
-        } else {
-            fetchPoem((p) => {
-                poem = p;
-                type(poem, () => erase(() => { showSignature = true; loop(); }));
-            });
-        }
-    }
-    loop();
 })();
 
 /* ---------- 2) 文章阅读进度条 ---------- */

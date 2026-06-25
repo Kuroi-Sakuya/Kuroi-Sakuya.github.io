@@ -86,7 +86,7 @@ a { transition: color .2s ease, background-size .2s ease, opacity .2s ease; }
 }
 .banner-inner {
     position: relative;
-    width: 94%; max-width: var(--site-max); margin: 0 auto;
+    width: 92%; max-width: var(--site-max); margin: 0 auto;
     display: flex; align-items: center; gap: 1.6rem;
     height: 6.6rem;
 }
@@ -169,7 +169,7 @@ a { transition: color .2s ease, background-size .2s ease, opacity .2s ease; }
    单栏容器（流式）
    ========================================================= */
 .main-container.single-col {
-    display: block; width: 92%; max-width: 860px; margin: 0 auto;
+    display: block; width: 92%; max-width: var(--site-max); margin: 0 auto;
     padding: var(--main-top-padding) 0 6rem;
 }
 .main-container.single-col .main.full-width { width: 100%; }
@@ -177,6 +177,8 @@ main.main { gap: var(--section-separation); }
 
 /* 首页：容器全宽，分屏模块各自流式约束 */
 .is-home .main-container.single-col { width: 100%; max-width: 100%; padding: 0; }
+/* 首页页脚：与上方模块同宽居中（首页是全宽容器，页脚需自身约束，否则贴左）*/
+.is-home .site-footer { width: 92%; max-width: var(--site-max); margin-inline: auto; }
 
 /* =========================================================
    首页 · Hero（诗词打字机 + 昼夜渐变）
