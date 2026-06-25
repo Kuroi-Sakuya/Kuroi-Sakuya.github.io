@@ -3,7 +3,7 @@
  * 1) Hero 打字机：随机诗词（一言·诗词 API，每次不同）↔ 签名
  * 2) 文章阅读进度条
  * 3) 滚动渐显
- * 4) 留言板（Waline）滚动到可视区再懒加载
+ * （留言板 Waline 已改为复用 Stack 内置评论 partial，不在此处加载）
  */
 
 /* ---------- 1) Hero 打字机：每次调 API 取不同古诗词 ---------- */
@@ -114,45 +114,4 @@
         { threshold: 0.12 }
     );
     els.forEach((e) => io.observe(e));
-})();
-
-/* ---------- 4) 留言板 Waline 懒加载 ---------- */
-(function guestbook() {
-    const el = document.getElementById("waline-guestbook");
-    if (!el) return;
-    const serverURL = el.getAttribute("data-server");
-    if (!serverURL) return;
-
-    let loaded = false;
-    const io = new IntersectionObserver((entries) => {
-        entries.forEach((en) => {
-            if (!en.isIntersecting || loaded) return;
-            loaded = true;
-            io.disconnect();
-
-            const css = document.createElement("link");
-            css.rel = "stylesheet";
-            css.href = "https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.css";
-            document.head.appendChild(css);
-
-            const s = document.createElement("script");
-            s.src = "https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.umd.js";
-            s.onload = () => {
-                const W = (window as any).Waline;
-                if (W && typeof W.init === "function") {
-                    W.init({
-                        el: "#waline-guestbook",
-                        serverURL: serverURL,
-                        lang: el.getAttribute("data-lang") || "zh-CN",
-                        path: "/guestbook",
-                        login: "disable",
-                        requiredMeta: ["nick"],
-                        pageview: false,
-                    });
-                }
-            };
-            document.body.appendChild(s);
-        });
-    }, { threshold: 0.05 });
-    io.observe(el);
 })();
