@@ -30,7 +30,7 @@ params:
 
     footer:
         since: 2026
-        customText: 为你收集日落的云朵
+        customText: 世界是我自由意志的展开
 
     dateFormat:
         published: 2006-01-02
@@ -39,7 +39,7 @@ params:
     # ===== 侧边栏（标题下的小字 / 头像）=====
     sidebar:
         emoji: 🌙
-        subtitle: 记录生活、想法，以及热爱的一切    # ← 侧边栏副标题
+        subtitle: 普通的美少女 · INFJ 研究生    # ← 侧边栏副标题
         avatar:
             enabled: true
             local: false
