@@ -285,3 +285,76 @@ main.main { gap: var(--section-separation); }
 .nf-text { color: var(--card-text-color-secondary); margin: 0; font-size: 1.8rem; }
 .nf-links { display: flex; gap: 2rem; font-size: 1.6rem; }
 .nf-links a { color: var(--accent-color); }
+
+/* =========================================================
+   列表/分类/Timeline 页（统一结构）
+   ========================================================= */
+/* 页标题（与首页区块标题同款竖条）*/
+.page-title {
+    font-size: 2.6rem; font-weight: 700; margin: 0 0 2.4rem;
+    color: var(--card-text-color-main); position: relative; padding-left: 1.4rem;
+}
+.page-title::before {
+    content: ''; position: absolute; left: 0; top: .18em; bottom: .18em;
+    width: 5px; border-radius: 3px;
+    background: linear-gradient(var(--accent-color), var(--accent-color-darker));
+}
+
+/* 标题 + 返回 按钮一行 */
+.page-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2.4rem; }
+.page-head .page-title { margin-bottom: 0; }
+.page-head--end { justify-content: flex-end; margin-bottom: 1.6rem; }
+.page-back {
+    flex-shrink: 0; display: inline-flex; align-items: center; gap: .4rem;
+    padding: .6rem 1.4rem; border-radius: 999px; font-size: 1.5rem;
+    border: 1px solid var(--accent-color); color: var(--accent-color);
+    transition: all .2s ease;
+}
+.page-back:hover { background: var(--accent-color); color: var(--accent-color-text); }
+
+.list-empty { color: var(--card-text-color-tertiary); }
+
+/* 分类总览：卡片网格（名字 + 篇数，无日期）*/
+.category-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.6rem;
+}
+.category-card {
+    display: flex; flex-direction: column; gap: .6rem; padding: 2.4rem;
+    border-radius: var(--card-border-radius); background: var(--card-background);
+    box-shadow: var(--shadow-l1); transition: transform .25s ease, box-shadow .25s ease;
+}
+.category-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-l3); }
+.cat-name { font-size: 2rem; font-weight: 700; color: var(--card-text-color-main); }
+.cat-count { font-size: 1.4rem; color: var(--accent-color); }
+
+/* =========================================================
+   Timeline 竖向时间轴
+   ========================================================= */
+.timeline { position: relative; padding-left: 2.8rem; }
+.timeline::before {
+    content: ''; position: absolute; left: .6rem; top: .4rem; bottom: .4rem; width: 2px;
+    background: linear-gradient(var(--accent-color), var(--accent-color-darker)); opacity: .45;
+}
+.tl-year {
+    font-size: 2rem; font-weight: 700; color: var(--accent-color);
+    margin: 2.8rem 0 1.2rem;
+}
+.tl-year:first-child { margin-top: 0; }
+.tl-item {
+    position: relative; display: flex; align-items: baseline; gap: 1.4rem; padding: .7rem 0;
+}
+.tl-item::before {
+    content: ''; position: absolute; left: -2.75rem; top: 1.15rem;
+    width: 1.1rem; height: 1.1rem; border-radius: 50%;
+    background: var(--body-background); border: 2px solid var(--accent-color);
+    transition: all .25s ease;
+}
+.tl-item:hover::before {
+    background: var(--accent-color); box-shadow: 0 0 0 4px rgba(223, 109, 142, 0.22);
+}
+.tl-date {
+    flex-shrink: 0; font-size: 1.4rem; color: var(--card-text-color-tertiary);
+    font-variant-numeric: tabular-nums; min-width: 3.6em;
+}
+.tl-title { font-size: 1.7rem; color: var(--card-text-color-main); transition: color .2s ease; }
+.tl-item:hover .tl-title { color: var(--accent-color); }

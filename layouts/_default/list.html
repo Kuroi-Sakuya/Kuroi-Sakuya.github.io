@@ -1,0 +1,41 @@
+{{ define "main" }}
+    {{- if eq .Kind "taxonomy" -}}
+        {{/* 分类总览：直接列出每个分类（名字 + 篇数），不要章节/日期 */}}
+        <h1 class="page-title">{{ .Title }}</h1>
+        {{- with .Pages -}}
+            <div class="category-grid">
+                {{- range . -}}
+                    <a class="category-card" href="{{ .RelPermalink }}">
+                        <span class="cat-name">{{ .Title }}</span>
+                        <span class="cat-count">{{ len .Pages }} 篇</span>
+                    </a>
+                {{- end -}}
+            </div>
+        {{- else -}}
+            <p class="list-empty">还没有分类。</p>
+        {{- end -}}
+
+    {{- else if eq .Kind "term" -}}
+        {{/* 某个分类下的文章列表：标题 + 右上「返回」+ 文章 */}}
+        <header class="page-head">
+            <h1 class="page-title">{{ .Title }}</h1>
+            <a class="page-back" href="{{ "/categories/" | relLangURL }}">← 返回</a>
+        </header>
+        {{ $paginator := partial "helper/paginator.html" . }}
+        <section class="article-list--compact">
+            {{ range $paginator.Pages }}{{ partial "article-list/compact" . }}{{ end }}
+        </section>
+        {{ partial "pagination.html" . }}
+
+    {{- else -}}
+        {{/* 普通 section 列表兜底 */}}
+        <h1 class="page-title">{{ .Title }}</h1>
+        {{ $paginator := partial "helper/paginator.html" . }}
+        <section class="article-list--compact">
+            {{ range $paginator.Pages }}{{ partial "article-list/compact" . }}{{ end }}
+        </section>
+        {{ partial "pagination.html" . }}
+    {{- end -}}
+
+    {{ partialCached "footer/footer" . }}
+{{ end }}
