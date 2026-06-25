@@ -1,0 +1,62 @@
+{{/*
+    顶部 Banner 导航。
+    复用主题脚本所需的元素 ID：
+      #toggle-menu / #main-menu  → assets/ts/menu.ts（移动端抽屉）
+      #dark-mode-toggle          → assets/ts/colorScheme.ts（明暗切换）
+    若日后主题改了这些选择器，需在 assets/ts/custom.ts 自写处理器兜底。
+*/}}
+<header class="top-banner">
+    <div class="banner-inner">
+        {{/* 品牌：小头像 + 站名 */}}
+        <a class="banner-brand" href="{{ .Site.BaseURL | relLangURL }}">
+            {{- with .Site.Params.sidebar.avatar -}}
+                {{- if (default true .enabled) -}}
+                    {{- if not .local -}}
+                        <img class="banner-avatar" src="{{ .src }}" width="40" height="40" loading="lazy" alt="avatar">
+                    {{- else -}}
+                        {{- with resources.Get .src -}}
+                            {{- $a := .Resize "80x" -}}
+                            <img class="banner-avatar" src="{{ $a.RelPermalink }}" width="40" height="40" loading="lazy" alt="avatar">
+                        {{- end -}}
+                    {{- end -}}
+                {{- end -}}
+            {{- end -}}
+            <span class="banner-title">{{ .Site.Title }}</span>
+        </a>
+
+        {{/* 主导航（移动端为抽屉）*/}}
+        <ol class="menu" id="main-menu">
+            {{- $currentPage := . -}}
+            {{- range .Site.Menus.main -}}
+            {{- $active := or (eq $currentPage.RelPermalink .URL) (or ($currentPage.HasMenuCurrent "main" .) ($currentPage.IsMenuCurrent "main" .)) -}}
+            <li {{ if $active }}class="current"{{ end }}>
+                <a href="{{ .URL }}" {{ if eq .Params.newTab true }}target="_blank" rel="noopener"{{ end }}>
+                    {{- with .Params.Icon }}{{ partial "helper/icon" . }}{{ end -}}
+                    <span>{{- .Name -}}</span>
+                </a>
+            </li>
+            {{- end -}}
+        </ol>
+
+        {{/* 右侧操作：搜索图标 + 明暗切换 + 移动端汉堡 */}}
+        <div class="banner-actions">
+            {{- $query := first 1 (where .Site.Pages "Layout" "==" "search") -}}
+            {{- with index $query 0 -}}
+                <a class="banner-search" href="{{ .RelPermalink }}" title="{{ T `search.title` }}" aria-label="{{ T `search.title` }}">
+                    {{ partial "helper/icon" "search" }}
+                </a>
+            {{- end -}}
+
+            {{- if (default false .Site.Params.colorScheme.toggle) -}}
+                <button class="banner-darkmode" id="dark-mode-toggle" type="button" aria-label="{{ T `darkMode` }}">
+                    {{ partial "helper/icon" "toggle-left" }}
+                    {{ partial "helper/icon" "toggle-right" }}
+                </button>
+            {{- end -}}
+
+            <button class="hamburger hamburger--spin banner-hamburger" type="button" id="toggle-menu" aria-label="{{ T `toggleMenu` }}">
+                <span class="hamburger-box"><span class="hamburger-inner"></span></span>
+            </button>
+        </div>
+    </div>
+</header>

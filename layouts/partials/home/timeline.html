@@ -1,0 +1,19 @@
+{{/* 第二/三屏：近期文章（按时间，随内容自适应）+ 阅读全部 */}}
+<section class="home-timeline reveal" id="home-timeline">
+    <h2 class="home-section-title">最近</h2>
+
+    {{- $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections -}}
+    {{- $pages = where $pages "Params.hidden" "!=" true -}}
+    {{- if $pages -}}
+        <div class="article-list--compact">
+            {{- range first 12 $pages -}}
+                {{ partial "article-list/compact" . }}
+            {{- end -}}
+        </div>
+        <div class="home-readall">
+            <a class="read-all-link" href="{{ "/archives/" | relLangURL }}">阅读全部 →</a>
+        </div>
+    {{- else -}}
+        <p style="color: var(--card-text-color-tertiary)">还没有文章，故事正在酝酿中……</p>
+    {{- end -}}
+</section>

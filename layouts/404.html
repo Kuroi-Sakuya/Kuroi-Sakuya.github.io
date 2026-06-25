@@ -1,0 +1,16 @@
+{{ define "body-class" }}template-404{{ end }}
+
+{{ define "main" }}
+    <div class="not-found">
+        <div class="nf-code">404</div>
+        <p class="nf-text">这里什么都没有，像一句没说完的诗。</p>
+        <div class="nf-links">
+            <a href="{{ .Site.BaseURL | relLangURL }}">← 回到主页</a>
+            {{- $query := first 1 (where .Site.Pages "Layout" "==" "search") -}}
+            {{- with index $query 0 -}}
+                <a href="{{ .RelPermalink }}">搜索</a>
+            {{- end -}}
+        </div>
+    </div>
+    {{ partial "footer/footer.html" . }}
+{{ end }}

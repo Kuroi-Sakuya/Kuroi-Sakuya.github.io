@@ -1,11 +1,6 @@
 ---
 title: 链接
 slug: links
-menu:
-    main:
-        weight: -50
-        params:
-            icon: link
 comments: false
 links:
   - title: GitHub

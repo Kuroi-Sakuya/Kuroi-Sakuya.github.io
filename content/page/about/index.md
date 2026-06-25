@@ -3,11 +3,6 @@ title: 关于
 description: 阿颖 / 清清 · 普通的美少女 INFJ 研究生
 date: 2026-06-23
 slug: about
-menu:
-    main:
-        weight: -90
-        params:
-            icon: user
 ---
 
 **阿颖 / 清清**　·　现坐标 江城 / 龙门 le<br>
