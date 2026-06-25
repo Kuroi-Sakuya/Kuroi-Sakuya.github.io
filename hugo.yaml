@@ -58,10 +58,10 @@ params:
     # 留言板：自托管 Waline（在你的 VPS）。
     # 拿到地址后：填 serverURL、把 enabled 改成 true 即可上线。
     comments:
-        enabled: false
+        enabled: true
         provider: waline
         waline:
-            serverURL:            # ← 你 VPS 上 Waline 的地址，如 https://comment.你的域名
+            serverURL: https://kuroi-sakuya.duckdns.org
             lang: zh-CN
             requiredMeta:         # 只要昵称 → 匿名留言（邮箱可选）
                 - nick
