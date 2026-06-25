@@ -1,10 +1,9 @@
 /* =========================================================
-   咲夜 · 花开的夜   —   自定义样式
+   咲夜 · 花开的夜   自定义样式
    浅色 = 日落樱花   |   深色 = 雨夜霓虹
-   想整体调观感，改这个文件就行（不动主题本体，升级不冲突）
    ========================================================= */
 
-/* ---------- 字体：思源宋体 + Source Serif 4（衬线、好读、文气）---------- */
+/* ---------- 字体：思源宋体 + Source Serif 4 ---------- */
 :root {
     --base-font-family: "Source Serif 4", "Noto Serif SC", "Songti SC",
         "Noto Serif CJK SC", "Source Han Serif SC", Georgia, "Times New Roman", serif;
@@ -13,8 +12,8 @@
 
 /* ---------- 浅色：日落樱花 ---------- */
 :root {
-    --body-background: #fcf5f2;          /* 暖樱纸底 */
-    --accent-color: #df6d8e;             /* 樱花玫瑰 */
+    --body-background: #fcf5f2;
+    --accent-color: #df6d8e;
     --accent-color-darker: #c64f76;
     --accent-color-text: #ffffff;
     --body-text-color: #5a5560;
@@ -24,13 +23,12 @@
     --card-text-color-main: #2b2730;
     --card-text-color-secondary: #6b6670;
     --card-text-color-tertiary: #8a8590;
-    --card-border-radius: 16px;          /* 更圆润的卡片 */
+    --card-border-radius: 16px;
 
-    --tag-border-radius: 999px;          /* 胶囊标签 */
-    --link-background-color: 223, 109, 142;   /* 正文链接高亮=主色 */
+    --tag-border-radius: 999px;
+    --link-background-color: 223, 109, 142;
     --blockquote-background-color: #fdeef2;
 
-    /* 柔和暖色阴影 */
     --shadow-l1: 0 4px 14px rgba(199, 79, 118, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
     --shadow-l2: 0 10px 30px rgba(199, 79, 118, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
     --shadow-l3: 0 10px 30px rgba(199, 79, 118, 0.10), 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -39,8 +37,8 @@
 
 /* ---------- 深色：雨夜霓虹 ---------- */
 :root[data-scheme="dark"] {
-    --body-background: #15161f;          /* 深靛夜 */
-    --accent-color: #ff8fb0;             /* 霓虹樱粉 */
+    --body-background: #15161f;
+    --accent-color: #ff8fb0;
     --accent-color-darker: #ff6f9c;
     --accent-color-text: #1a1320;
     --body-text-color: rgba(255, 255, 255, 0.78);
@@ -60,36 +58,210 @@
     --shadow-l4: 0 24px 48px rgba(0, 0, 0, 0.55);
 }
 
-/* ---------- 细节润色 ---------- */
+/* ---------- 全局润色 ---------- */
 html { scroll-behavior: smooth; }
-
-::selection {
-    background: var(--accent-color);
-    color: var(--accent-color-text);
-}
-
-/* 头像：柔光环 + hover 轻微放大 */
-.site-avatar img {
-    box-shadow: 0 0 0 4px rgba(223, 109, 142, 0.18);
-    transition: transform .3s ease, box-shadow .3s ease;
-}
-.site-avatar img:hover {
-    transform: scale(1.04);
-    box-shadow: 0 0 0 6px rgba(223, 109, 142, 0.28);
-}
-
-/* 文章卡片：hover 轻微上浮 */
-.article-list article {
-    transition: transform .25s ease, box-shadow .25s ease;
-}
-.article-list article:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-l4);
-}
-
-/* 正文图片圆角；引用块左条用主色 */
+::selection { background: var(--accent-color); color: var(--accent-color-text); }
+a { transition: color .2s ease, background-size .2s ease, opacity .2s ease; }
 .article-content img { border-radius: 12px; }
 .article-content blockquote { border-left-color: var(--accent-color); }
 
-/* 链接过渡更顺滑 */
-a { transition: color .2s ease, background-size .2s ease, opacity .2s ease; }
+/* =========================================================
+   顶部 Banner（全站）
+   复用主题 #toggle-menu / #main-menu / #dark-mode-toggle 的 JS
+   ========================================================= */
+.top-banner {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--card-background);
+    border-bottom: 1px solid var(--card-separator-color);
+}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .top-banner {
+        background: color-mix(in srgb, var(--card-background) 82%, transparent);
+        -webkit-backdrop-filter: saturate(160%) blur(12px);
+        backdrop-filter: saturate(160%) blur(12px);
+    }
+}
+.banner-inner {
+    position: relative;
+    max-width: 1080px; margin: 0 auto;
+    display: flex; align-items: center; gap: .6rem;
+    height: 60px; padding: 0 16px;
+}
+.banner-brand {
+    display: flex; align-items: center; gap: .55rem; flex-shrink: 0;
+    font-weight: 700; color: var(--card-text-color-main);
+}
+.banner-brand:hover { color: var(--accent-color); }
+.banner-avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(223, 109, 142, 0.28);
+}
+.banner-title { font-size: 1.05rem; letter-spacing: .02em; }
+
+.banner-actions { margin-left: auto; display: flex; align-items: center; gap: .25rem; }
+.banner-search, .banner-darkmode {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 38px; height: 38px; border: none; background: transparent; cursor: pointer;
+    color: var(--card-text-color-secondary); border-radius: 10px; transition: all .2s ease;
+}
+.banner-search:hover, .banner-darkmode:hover { color: var(--accent-color); background: var(--card-background-selected); }
+.banner-search svg, .banner-darkmode svg { width: 1.3rem; height: 1.3rem; }
+.banner-darkmode svg:nth-of-type(2) { display: none; }
+:root[data-scheme="dark"] .banner-darkmode svg:nth-of-type(1) { display: none; }
+:root[data-scheme="dark"] .banner-darkmode svg:nth-of-type(2) { display: inline-flex; }
+
+/* 汉堡按钮（移动端） */
+.banner-hamburger { padding: 0; }
+
+/* 导航：移动端为抽屉，桌面为横向 */
+#main-menu {
+    position: absolute; left: 0; right: 0; top: 100%;
+    display: none; flex-direction: column;
+    list-style: none; margin: 0; padding: .4rem 16px 1rem;
+    background: var(--card-background);
+    border-bottom: 1px solid var(--card-separator-color);
+    box-shadow: var(--shadow-l2);
+}
+#main-menu.show { display: flex; }
+#main-menu li { list-style: none; }
+#main-menu a {
+    display: flex; align-items: center; gap: .5rem;
+    padding: .6rem .7rem; border-radius: 10px; position: relative;
+    color: var(--card-text-color-secondary);
+}
+#main-menu a:hover { color: var(--accent-color); background: var(--card-background-selected); }
+#main-menu .current a { color: var(--accent-color); }
+#main-menu a svg { width: 1.15rem; height: 1.15rem; }
+/* 隐藏主题在菜单里追加的语言/暗色 li（我们用 banner 右侧按钮） */
+#main-menu .menu-bottom-section { display: none; }
+
+@include respond(md) {
+    .banner-hamburger { display: none; }
+    #main-menu {
+        position: static; display: flex !important; flex-direction: row; align-items: center;
+        margin-left: 1.2rem; padding: 0; gap: .2rem;
+        background: none; border: none; box-shadow: none;
+    }
+    #main-menu a:hover { background: transparent; }
+    /* 桌面 hover 下划线生长 */
+    #main-menu a::after {
+        content: ''; position: absolute; left: .7rem; right: .7rem; bottom: .3rem;
+        height: 2px; border-radius: 2px; background: var(--accent-color);
+        transform: scaleX(0); transform-origin: left; transition: transform .25s ease;
+    }
+    #main-menu a:hover::after, #main-menu .current a::after { transform: scaleX(1); }
+}
+
+/* =========================================================
+   单栏容器（去掉左右侧栏后）
+   ========================================================= */
+.main-container.single-col {
+    display: block; max-width: 800px; width: 100%; margin: 0 auto;
+    padding: var(--main-top-padding) 16px 50px;
+}
+.main-container.single-col .main.full-width { width: 100%; }
+
+/* 首页：容器全宽，分屏模块各自约束内宽 */
+.is-home .main-container.single-col { max-width: 100%; padding: 0; }
+
+/* =========================================================
+   首页 · Hero 第一屏（诗词打字机 + 昼夜渐变）
+   ========================================================= */
+.home-hero {
+    position: relative; min-height: 82vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 80px 20px 56px;
+    background: linear-gradient(160deg, #fff7f1 0%, #fde2ec 48%, #f6d6e6 100%);
+}
+:root[data-scheme="dark"] .home-hero {
+    background: linear-gradient(160deg, #14151f 0%, #1d1830 52%, #2b1430 100%);
+}
+.hero-inner { max-width: 900px; }
+.hero-typer {
+    margin: 0; font-weight: 600; letter-spacing: .04em; line-height: 1.6;
+    font-size: clamp(1.45rem, 4.2vw, 2.6rem);
+    color: var(--card-text-color-main); min-height: 1.6em;
+}
+.hero-cursor {
+    display: inline-block; width: 2px; height: 1.05em; margin-left: 5px;
+    vertical-align: -0.12em; background: var(--accent-color);
+    animation: hero-blink 1s steps(1) infinite;
+}
+@keyframes hero-blink { 50% { opacity: 0; } }
+.hero-scroll {
+    position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    color: var(--card-text-color-tertiary); font-size: .78rem; letter-spacing: .1em;
+}
+.hero-scroll .chev {
+    width: 11px; height: 11px;
+    border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+    transform: rotate(45deg); animation: hero-bounce 1.7s infinite;
+}
+@keyframes hero-bounce {
+    0%, 100% { transform: rotate(45deg) translate(0, 0); opacity: .6; }
+    50% { transform: rotate(45deg) translate(3px, 3px); opacity: 1; }
+}
+
+/* =========================================================
+   首页 · 模块（时间线 / 留言板）
+   ========================================================= */
+.home-timeline, .home-guestbook {
+    max-width: 820px; margin: 0 auto; padding: 64px 20px;
+}
+.home-section-title {
+    font-size: 1.5rem; margin: 0 0 1.4rem; color: var(--card-text-color-main);
+    position: relative; padding-left: .8rem;
+}
+.home-section-title::before {
+    content: ''; position: absolute; left: 0; top: .18em; bottom: .18em;
+    width: 4px; border-radius: 2px;
+    background: linear-gradient(var(--accent-color), var(--accent-color-darker));
+}
+.home-readall { margin-top: 1.8rem; text-align: center; }
+.read-all-link {
+    display: inline-block; padding: .5rem 1.5rem; border-radius: 999px;
+    border: 1px solid var(--accent-color); color: var(--accent-color);
+    transition: all .22s ease;
+}
+.read-all-link:hover { background: var(--accent-color); color: var(--accent-color-text); }
+
+.guestbook-placeholder {
+    text-align: center; padding: 44px 20px; color: var(--card-text-color-secondary);
+    background: var(--card-background); border-radius: var(--card-border-radius);
+    box-shadow: var(--shadow-l1);
+}
+
+/* 滚动渐显 */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.revealed { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; }
+    .hero-scroll .chev, .hero-cursor { animation: none; }
+    html { scroll-behavior: auto; }
+}
+
+/* =========================================================
+   文章阅读进度条
+   ========================================================= */
+.reading-progress {
+    position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 200;
+    background: linear-gradient(90deg, var(--accent-color), var(--accent-color-darker));
+    transition: width .1s linear;
+}
+
+/* =========================================================
+   自定义 404
+   ========================================================= */
+.not-found {
+    min-height: 62vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center; gap: 1.1rem;
+}
+.nf-code {
+    font-size: clamp(4rem, 16vw, 9rem); font-weight: 700; line-height: 1;
+    background: linear-gradient(135deg, var(--accent-color), #ef9a5a);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.nf-text { color: var(--card-text-color-secondary); margin: 0; }
+.nf-links { display: flex; gap: 1.2rem; }
+.nf-links a { color: var(--accent-color); }

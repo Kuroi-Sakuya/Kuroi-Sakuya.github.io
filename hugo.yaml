@@ -2,8 +2,8 @@
 baseURL: https://kuroi-sakuya.github.io/
 languageCode: zh-cn
 theme: hugo-theme-stack
-title: Kuroi-Sakuya            # ← 站点标题，改成你想要的名字
-copyright: Kuroi-Sakuya        # ← 页脚版权署名
+title: 互联网冷冻小面包          # ← 站点标题
+copyright: 互联网冷冻小面包      # ← 页脚版权署名
 
 DefaultContentLanguage: zh-cn
 hasCJKLanguage: true           # 中文分词/字数统计需要
@@ -30,7 +30,7 @@ params:
 
     footer:
         since: 2026
-        customText: 世界是我自由意志的展开
+        customText: 二象无常，遇而无往
 
     dateFormat:
         published: 2006-01-02
@@ -55,25 +55,21 @@ params:
             enabled: false
             default: Licensed under CC BY-NC-SA 4.0
 
-    # 评论默认关闭；将来想开（推荐 giscus，基于 GitHub Discussions）再配
+    # 留言板：自托管 Waline（在你的 VPS）。
+    # 拿到地址后：填 serverURL、把 enabled 改成 true 即可上线。
     comments:
         enabled: false
-        provider: giscus
+        provider: waline
+        waline:
+            serverURL:            # ← 你 VPS 上 Waline 的地址，如 https://comment.你的域名
+            lang: zh-CN
+            requiredMeta:         # 只要昵称 → 匿名留言（邮箱可选）
+                - nick
 
+    # 全站单栏：不渲染右侧栏小工具（首页用自定义模块，文章页不放目录）
     widgets:
-        homepage:
-            - type: search
-            - type: archives
-              params:
-                  limit: 5
-            - type: categories
-              params:
-                  limit: 10
-            - type: tag-cloud
-              params:
-                  limit: 10
-        page:
-            - type: toc
+        homepage: []
+        page: []
 
     opengraph:
         twitter:
@@ -96,10 +92,33 @@ params:
         content:
             enabled: true
 
-# ===== 菜单 =====
-# 主页/关于/归档/搜索/链接 这些菜单项写在各自内容文件的 front matter 里。
+# ===== 顶部 Banner 导航（仅这 4 项；搜索是 banner 右侧图标，不在此列）=====
 menu:
-    main: []
+    main:
+        - identifier: home
+          name: 主页
+          url: /
+          weight: 1
+          params:
+              icon: home
+        - identifier: categories
+          name: 分类
+          url: /categories/
+          weight: 2
+          params:
+              icon: categories
+        - identifier: timeline
+          name: Timeline
+          url: /archives/
+          weight: 3
+          params:
+              icon: clock
+        - identifier: about
+          name: About
+          url: /about/
+          weight: 4
+          params:
+              icon: user
     social:
         - identifier: github
           name: GitHub

@@ -1,0 +1,16 @@
+{{/* 第四屏：留言板。启用且配好 Waline serverURL 时，由 custom.ts 懒加载并初始化；
+       否则显示占位卡片。匿名昵称+留言、后台记录 IP 由自托管 Waline 提供。 */}}
+<section class="home-guestbook reveal" id="home-guestbook">
+    <h2 class="home-section-title">留言板</h2>
+
+    {{- $c := .Site.Params.comments -}}
+    {{- if and $c.enabled (eq $c.provider "waline") $c.waline.serverURL -}}
+        <div id="waline-guestbook"
+             data-server="{{ $c.waline.serverURL }}"
+             data-lang="{{ default "zh-CN" $c.waline.lang }}"></div>
+    {{- else -}}
+        <div class="guestbook-placeholder">
+            <p>留言板筹备中 ✨ 很快可以在这里给我留言。</p>
+        </div>
+    {{- end -}}
+</section>
