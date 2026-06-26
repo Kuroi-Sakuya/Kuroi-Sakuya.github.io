@@ -373,12 +373,16 @@ main.main { gap: var(--section-separation); }
 }
 .article-list > article .article-image { overflow: hidden; }
 .article-list > article .article-image img {
-    width: 100%; height: auto;            /* 解除主题 150/200/250px 死高度 */
-    aspect-ratio: 16 / 9; object-fit: cover; display: block;
+    width: 100%;
+    height: clamp(14rem, 20vw, 19rem);    /* 半张图式 banner：只露中间一条，不再 16:9 满高 */
+    object-fit: cover; display: block;
     transition: transform .6s ease;
 }
 .article-list > article:hover .article-image img { transform: scale(1.04); }
 .article-list > article .article-details { padding: var(--card-padding); }
+
+/* 首页「最近」保持纯文字：隐藏 compact 卡片的右侧缩略图 */
+.home-timeline .article-image { display: none; }
 @media (prefers-reduced-motion: reduce) {
     .article-list > article:hover { transform: none; }
     .article-list > article .article-image img,
