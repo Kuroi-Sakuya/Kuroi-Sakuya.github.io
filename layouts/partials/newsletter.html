@@ -1,0 +1,21 @@
+{{/* 邮件订阅（Newsletter）复用组件。
+       只在 enabled + serverURL + listUUID 都齐全时渲染；
+       调用处放在 comments/include 之后 → 「留言板下面才有，没留言板就没有」。
+       提交走 fetch POST 到 Listmonk 公共订阅表单接口，双重确认 + 一键退订由 Listmonk 处理。 */}}
+{{- with .Site.Params.newsletter -}}
+{{- if and .enabled .serverURL .listUUID -}}
+<section class="newsletter reveal" aria-labelledby="newsletter-title">
+    <h2 class="newsletter-title" id="newsletter-title">订阅 · 收到我的新文章</h2>
+    <p class="newsletter-desc">留下邮箱，新文章和偶尔的碎碎念会寄到你的信箱。随时可退订。</p>
+    <form class="newsletter-form" data-server="{{ .serverURL }}" data-list="{{ .listUUID }}">
+        <input type="email" name="email" class="newsletter-input" required
+               autocomplete="email" placeholder="你的邮箱" aria-label="你的邮箱" />
+        {{/* 蜜罐：真人看不到，机器人会填 → 命中即静默丢弃 */}}
+        <input type="text" name="hp_name" class="newsletter-hp" tabindex="-1"
+               autocomplete="off" aria-hidden="true" />
+        <button type="submit" class="newsletter-btn">订阅</button>
+        <p class="newsletter-msg" role="status" aria-live="polite"></p>
+    </form>
+</section>
+{{- end -}}
+{{- end -}}

@@ -451,3 +451,53 @@ main.main { gap: var(--section-separation); }
     transform: translateY(-2px);
 }
 .tag-cloud .tc-count { font-size: 1.2rem; opacity: .65; }
+
+/* =========================================================
+   Newsletter 邮件订阅（复用组件，放在留言板下面）
+   ========================================================= */
+.newsletter {
+    margin-top: var(--section-separation);
+    padding: 2.4rem;
+    background: var(--card-background);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--shadow-l1);
+}
+.newsletter-title {
+    font-size: 2rem; font-weight: 600; margin: 0 0 .6rem;
+    color: var(--card-text-color-main);
+}
+.newsletter-desc {
+    font-size: 1.5rem; line-height: 1.7; margin: 0 0 1.6rem;
+    color: var(--card-text-color-secondary);
+}
+.newsletter-form { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+.newsletter-input {
+    flex: 1 1 22rem; min-width: 0;
+    padding: 1rem 1.6rem; font-size: 1.5rem; font-family: inherit;
+    color: var(--card-text-color-main);
+    background: var(--body-background);
+    border: 1px solid rgba(var(--link-background-color), .35);
+    border-radius: 999px; outline: none;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+.newsletter-input:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(var(--link-background-color), .18);
+}
+.newsletter-btn {
+    flex: 0 0 auto;
+    padding: 1rem 2.4rem; font-size: 1.5rem; font-family: inherit;
+    color: var(--accent-color-text); background: var(--accent-color);
+    border: none; border-radius: 999px; cursor: pointer;
+    transition: background .2s ease, transform .2s ease;
+}
+.newsletter-btn:hover { background: var(--accent-color-darker); transform: translateY(-2px); }
+.newsletter-btn:disabled { opacity: .6; cursor: default; transform: none; }
+.newsletter-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.newsletter-msg {
+    flex-basis: 100%; margin: .2rem 0 0; min-height: 1.4em;
+    font-size: 1.4rem; line-height: 1.4;
+}
+.newsletter-msg.is-ok { color: var(--accent-color-darker); }
+.newsletter-msg.is-err { color: #d6536a; }
+:root[data-scheme="dark"] .newsletter-msg.is-err { color: #ff9bae; }

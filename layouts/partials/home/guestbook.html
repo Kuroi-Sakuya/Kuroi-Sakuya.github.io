@@ -4,6 +4,8 @@
     <h2 class="home-section-title">留言板</h2>
     {{ if .Site.Params.comments.enabled }}
         {{ partial "comments/include.html" . }}
+        {{/* 留言板下面：邮件订阅（仅在 newsletter 配置齐全时显示） */}}
+        {{ partial "newsletter.html" . }}
     {{ else }}
         <div class="guestbook-placeholder"><p>留言板筹备中 ✨ 很快可以在这里给我留言。</p></div>
     {{ end }}

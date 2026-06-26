@@ -3,6 +3,7 @@
  * 1) Hero 打字机：随机诗词（一言·诗词 API，每次不同）↔ 签名
  * 2) 文章阅读进度条
  * 3) 滚动渐显
+ * 4) Newsletter 订阅（POST 到 Listmonk 公共表单）
  * （留言板 Waline 已改为复用 Stack 内置评论 partial，不在此处加载）
  */
 
@@ -114,4 +115,59 @@
         { threshold: 0.12 }
     );
     els.forEach((e) => io.observe(e));
+})();
+
+/* ---------- 4) Newsletter 订阅（POST 到 Listmonk 公共表单，双重确认由后端处理） ---------- */
+(function newsletter() {
+    const form = document.querySelector<HTMLFormElement>(".newsletter-form");
+    if (!form) return;
+    const server = (form.dataset.server || "").replace(/\/+$/, "");
+    const list = form.dataset.list || "";
+    if (!server || !list) return;
+
+    const input = form.querySelector<HTMLInputElement>('input[name="email"]');
+    const hp = form.querySelector<HTMLInputElement>('input[name="hp_name"]');
+    const btn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const msg = form.querySelector<HTMLElement>(".newsletter-msg");
+    if (!input || !btn || !msg) return;
+
+    const setMsg = (text: string, ok: boolean) => {
+        msg.textContent = text;
+        msg.classList.remove("is-ok", "is-err");
+        msg.classList.add(ok ? "is-ok" : "is-err");
+    };
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (hp && hp.value) return; // 蜜罐命中：静默丢弃
+        const email = (input.value || "").trim();
+        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+            setMsg("邮箱格式好像不太对，再检查一下？", false);
+            return;
+        }
+        const prev = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = "提交中…";
+        try {
+            const body = new URLSearchParams();
+            body.set("email", email);
+            body.append("l", list); // Listmonk 列表 UUID
+            const res = await fetch(server + "/subscription/form", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: body.toString(),
+            });
+            if (res.ok) {
+                setMsg("已收到！请去邮箱点确认链接完成订阅 ✨", true);
+                form.reset();
+            } else {
+                setMsg("提交失败了，稍后再试一次 🥲", false);
+            }
+        } catch (err) {
+            setMsg("网络出了点问题，稍后再试一次 🥲", false);
+        } finally {
+            btn.disabled = false;
+            btn.textContent = prev;
+        }
+    });
 })();
