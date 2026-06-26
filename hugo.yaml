@@ -72,9 +72,9 @@ params:
     #          ④ enabled 改成 true → 部署
     # 组件只在「有留言板」的页面、且 enabled+serverURL+listUUID 都齐全时才显示。
     newsletter:
-        enabled: false
-        serverURL: ""             # 例：https://news.kuroi-sakuya.duckdns.org（结尾不要加 /）
-        listUUID: ""              # Listmonk 列表的 UUID
+        enabled: true
+        serverURL: "https://news.11100117.xyz"          # Listmonk 地址（结尾不要加 /）
+        listUUID: "5a134cc8-4e6e-49b3-b6a2-946a7ca2d21c"  # Listmonk 列表 UUID
 
     # 全站单栏：不渲染右侧栏小工具（首页用自定义模块，文章页不放目录）
     widgets:
