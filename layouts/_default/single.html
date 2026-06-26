@@ -32,6 +32,8 @@
 
     {{ if not (eq .Params.comments false) }}
         {{ partial "comments/include" . }}
+        {{/* 留言板下面：邮件订阅（仅在 newsletter 配置齐全时显示） */}}
+        {{ partial "newsletter.html" . }}
     {{ end }}
 
     {{ partialCached "footer/footer" . }}

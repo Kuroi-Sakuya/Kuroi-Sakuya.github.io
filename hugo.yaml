@@ -66,6 +66,16 @@ params:
             requiredMeta:         # 只要昵称 → 匿名留言（邮箱可选）
                 - nick
 
+    # 邮件订阅（Newsletter）：自托管 Listmonk（在你的 VPS）。
+    # 上线步骤：① 在 VPS 起好 Listmonk ② 建一个「双重确认」列表，复制其 UUID
+    #          ③ 把 serverURL 填成 Listmonk 地址、listUUID 填列表 UUID
+    #          ④ enabled 改成 true → 部署
+    # 组件只在「有留言板」的页面、且 enabled+serverURL+listUUID 都齐全时才显示。
+    newsletter:
+        enabled: false
+        serverURL: ""             # 例：https://news.kuroi-sakuya.duckdns.org（结尾不要加 /）
+        listUUID: ""              # Listmonk 列表的 UUID
+
     # 全站单栏：不渲染右侧栏小工具（首页用自定义模块，文章页不放目录）
     widgets:
         homepage: []
