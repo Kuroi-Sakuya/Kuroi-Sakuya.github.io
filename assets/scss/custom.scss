@@ -358,3 +358,96 @@ main.main { gap: var(--section-separation); }
 }
 .tl-title { font-size: 1.7rem; color: var(--card-text-color-main); transition: color .2s ease; }
 .tl-item:hover .tl-title { color: var(--accent-color); }
+
+/* =========================================================
+   文章列表卡片封面（分类/标签 term 页 + section 兜底）
+   复用主题 .article-list 卡片栈，仅润色封面比例 + 悬浮；
+   传图 → 顶部等比封面带，不传图 → 纯文字卡片，二者尺度一致
+   ========================================================= */
+.article-list > article {
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+.article-list > article:hover {
+    transform: translateY(-4px);          /* 与 .category-card 同款悬浮 */
+    box-shadow: var(--shadow-l3);
+}
+.article-list > article .article-image { overflow: hidden; }
+.article-list > article .article-image img {
+    width: 100%; height: auto;            /* 解除主题 150/200/250px 死高度 */
+    aspect-ratio: 16 / 9; object-fit: cover; display: block;
+    transition: transform .6s ease;
+}
+.article-list > article:hover .article-image img { transform: scale(1.04); }
+.article-list > article .article-details { padding: var(--card-padding); }
+@media (prefers-reduced-motion: reduce) {
+    .article-list > article:hover { transform: none; }
+    .article-list > article .article-image img,
+    .article-list > article:hover .article-image img { transition: none; transform: none; }
+}
+
+/* =========================================================
+   文章详情页封面润色（模板已渲染，无图时不命中）
+   ========================================================= */
+.article-page .main-article .article-header .article-image {
+    overflow: hidden;
+    border-top-left-radius: var(--card-border-radius);
+    border-top-right-radius: var(--card-border-radius);
+}
+.article-page .main-article .article-header .article-image img {
+    width: 100%; height: auto; max-height: 46vh; object-fit: cover; display: block;
+    animation: cover-in 1.1s ease both, cover-kenburns 14s ease-out 1.1s both;
+    transform-origin: 50% 50%;
+}
+@keyframes cover-in {
+    from { opacity: 0; transform: scale(1.06); }
+    to   { opacity: 1; transform: scale(1.04); }
+}
+@keyframes cover-kenburns {
+    from { transform: scale(1.04); }
+    to   { transform: scale(1.0); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .article-page .main-article .article-header .article-image img { animation: none; }
+}
+
+/* =========================================================
+   文章底部标签：描边胶囊（区别于分类的实心 chip，共享胶囊语汇）
+   ========================================================= */
+.article-page .main-article .article-footer .article-tags a {
+    background-color: transparent; color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+    padding: .5rem 1.2rem; border-radius: 999px;
+    font-size: 1.4rem; line-height: 1.4; transition: all .2s ease;
+}
+.article-page .main-article .article-footer .article-tags a::before { content: "# "; opacity: .7; }
+.article-page .main-article .article-footer .article-tags a:hover {
+    background-color: var(--accent-color); color: var(--accent-color-text);
+}
+
+/* =========================================================
+   标签云（分类总览页底部）
+   ========================================================= */
+.tag-cloud-section { margin-top: var(--section-separation); }
+.cloud-title {
+    font-size: 2rem; font-weight: 600; margin: 0 0 1.6rem;
+    position: relative; padding-left: 1.4rem;
+}
+.cloud-title::before {
+    content: ""; position: absolute; left: 0; top: .2em; bottom: .2em; width: .5rem;
+    border-radius: 999px;
+    background: linear-gradient(var(--accent-color), var(--accent-color-darker));
+}
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 1rem; }
+.tag-cloud a {
+    display: inline-flex; align-items: baseline; gap: .5rem;
+    background-color: transparent; color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+    padding: .6rem 1.4rem; border-radius: 999px;
+    font-size: 1.5rem; transition: all .2s ease;
+}
+.tag-cloud a::before { content: "#"; opacity: .7; }
+.tag-cloud a:hover {
+    background-color: var(--accent-color); color: var(--accent-color-text);
+    transform: translateY(-2px);
+}
+.tag-cloud .tc-count { font-size: 1.2rem; opacity: .65; }

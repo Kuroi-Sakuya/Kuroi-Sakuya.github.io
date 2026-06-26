@@ -15,15 +15,29 @@
             <p class="list-empty">还没有分类。</p>
         {{- end -}}
 
+        {{/* 标签云：仅在分类总览页底部，方便跨分类的话题发现（标签是细粒度话题，分类是大栏目）*/}}
+        {{- if eq .Data.Plural "categories" -}}
+            {{- with .Site.Taxonomies.tags -}}{{- if gt (len .) 0 -}}
+                <section class="tag-cloud-section">
+                    <h2 class="cloud-title">标签</h2>
+                    <div class="tag-cloud">
+                        {{- range .ByCount -}}
+                            <a href="{{ .Page.RelPermalink }}">{{ .Page.LinkTitle }}<span class="tc-count">{{ .Count }}</span></a>
+                        {{- end -}}
+                    </div>
+                </section>
+            {{- end -}}{{- end -}}
+        {{- end -}}
+
     {{- else if eq .Kind "term" -}}
         {{/* 某个分类下的文章列表：标题 + 右上「返回」+ 文章 */}}
         <header class="page-head">
             <h1 class="page-title">{{ .Title }}</h1>
-            <a class="page-back" href="{{ "/categories/" | relLangURL }}">← 返回</a>
+            <a class="page-back" href="{{ (printf "/%s/" .Type) | relLangURL }}">← 返回</a>
         </header>
         {{ $paginator := partial "helper/paginator.html" . }}
-        <section class="article-list--compact">
-            {{ range $paginator.Pages }}{{ partial "article-list/compact" . }}{{ end }}
+        <section class="article-list">
+            {{ range $paginator.Pages }}{{ partial "article-list/default" . }}{{ end }}
         </section>
         {{ partial "pagination.html" . }}
 
@@ -31,8 +45,8 @@
         {{/* 普通 section 列表兜底 */}}
         <h1 class="page-title">{{ .Title }}</h1>
         {{ $paginator := partial "helper/paginator.html" . }}
-        <section class="article-list--compact">
-            {{ range $paginator.Pages }}{{ partial "article-list/compact" . }}{{ end }}
+        <section class="article-list">
+            {{ range $paginator.Pages }}{{ partial "article-list/default" . }}{{ end }}
         </section>
         {{ partial "pagination.html" . }}
     {{- end -}}
