@@ -158,7 +158,7 @@
                 body: body.toString(),
             });
             if (res.ok) {
-                setMsg("已收到！请去邮箱点确认链接完成订阅 ✨", true);
+                setMsg("订阅成功，谢谢你 ✨ 以后有更新会寄到你的信箱", true);
                 form.reset();
             } else {
                 setMsg("提交失败了，稍后再试一次 🥲", false);
