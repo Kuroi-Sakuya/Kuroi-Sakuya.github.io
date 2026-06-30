@@ -1,7 +1,8 @@
 {{/* 文章底部·分享：复制链接 + 微博 + X + Telegram。
      纯链接、无第三方脚本、无追踪——点了才跳转，符合全站隐私友好基调。
-     胶囊样式沿用底部标签的「描边胶囊」语汇，保持一致。
-     用 .Permalink（构建时为绝对地址）+ querify 自动 URL 编码。 */}}
+     href 是服务端渲染的兜底（无 JS 也能用）；custom.ts 会在点击时用
+     页面真实 location.href + 标题重建链接，确保参数一定带上（见 6) shareLinks）。
+     胶囊样式沿用底部标签的「描边胶囊」语汇，保持一致。 */}}
 <div class="article-share">
     <span class="article-share__label">
         <svg class="article-share__icon" viewBox="0 0 24 24" width="18" height="18"
@@ -18,10 +19,13 @@
     <div class="article-share__btns">
         <button type="button" class="share-btn share-btn--copy" data-share-url="{{ .Permalink }}">复制链接</button>
         <a class="share-btn" target="_blank" rel="noopener noreferrer"
+           data-share="weibo" data-share-url="{{ .Permalink }}" data-share-title="{{ .Title }}"
            href="https://service.weibo.com/share/share.php?{{ (querify "url" .Permalink "title" .Title) }}">微博</a>
         <a class="share-btn" target="_blank" rel="noopener noreferrer"
+           data-share="x" data-share-url="{{ .Permalink }}" data-share-title="{{ .Title }}"
            href="https://twitter.com/intent/tweet?{{ (querify "text" .Title "url" .Permalink) }}">X</a>
         <a class="share-btn" target="_blank" rel="noopener noreferrer"
+           data-share="telegram" data-share-url="{{ .Permalink }}" data-share-title="{{ .Title }}"
            href="https://t.me/share/url?{{ (querify "url" .Permalink "text" .Title) }}">Telegram</a>
     </div>
 </div>
