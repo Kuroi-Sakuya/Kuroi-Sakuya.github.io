@@ -86,11 +86,14 @@ params:
             site:
             card: summary_large_image
 
+    # 没有封面的页面（首页 / About / 列表 / hello 等）分享时的默认 OG 图。
+    # local: true → Stack 用 resources.GetMatch 在 assets/ 下找，故 src 写相对 assets 的路径。
+    # 有封面的文章仍优先用自己的封面（见 Stack head/opengraph 逻辑）。
     defaultImage:
         opengraph:
-            enabled: false
-            local: false
-            src:
+            enabled: true
+            local: true
+            src: img/og-default.png
 
     colorScheme:
         toggle: true
@@ -101,6 +104,16 @@ params:
             enabled: true
         content:
             enabled: true
+
+    # 轻量访问统计（隐私友好，默认全部留空 → 不输出任何脚本）。
+    # GoatCounter：去 goatcounter.com 注册一个代号 xxx（即 xxx.goatcounter.com），
+    #   把 xxx 填到 goatcounter 即自动启用，无需改 VPS。
+    # Umami（可选，自托管）：填 src（script.js 地址）+ websiteId 两项才启用。
+    analytics:
+        goatcounter: ""        # 你的 GoatCounter 代号（xxx → xxx.goatcounter.com）
+        umami:
+            src: ""            # 例：https://umami.你的域名/script.js
+            websiteId: ""
 
 # ===== 顶部 Banner 导航（仅这 4 项；搜索是 banner 右侧图标，不在此列）=====
 menu:
