@@ -24,6 +24,11 @@
 
     {{ partial "article/article.html" . }}
 
+    {{/* 文章底部分享按钮：仅文章页；可用 front matter `share: false` 单独关闭 */}}
+    {{ if and (eq .Type "post") (ne .Params.share false) }}
+        {{ partial "article/components/share.html" . }}
+    {{ end }}
+
     {{ if .Params.links }}
         {{ partial "article/components/links" . }}
     {{ end }}
