@@ -5,6 +5,7 @@
  * 3) 滚动渐显
  * 4) Newsletter 订阅（POST 到 Listmonk 公共表单）
  * 5) 复制文章链接（文章底部分享按钮）
+ * 6) 分享按钮：点击时用页面真实地址+标题重建链接（防参数丢失）
  * （留言板 Waline 已改为复用 Stack 内置评论 partial，不在此处加载）
  */
 
@@ -207,6 +208,35 @@
                 btn.textContent = original;
                 btn.classList.remove("is-copied");
             }, 1800);
+        });
+    });
+})();
+
+/* ---------- 6) 分享按钮：点击时用页面真实地址 + 标题重建链接 ----------
+ * 不依赖服务端 querify 渲染，确保 url / title 一定带到 X / 微博 / Telegram。 */
+(function shareLinks() {
+    const links = Array.from(document.querySelectorAll<HTMLAnchorElement>(".share-btn[data-share]"));
+    if (!links.length) return;
+    const build: Record<string, (u: string, t: string) => string> = {
+        weibo: (u, t) =>
+            "https://service.weibo.com/share/share.php?url=" +
+            encodeURIComponent(u) + "&title=" + encodeURIComponent(t),
+        x: (u, t) =>
+            "https://twitter.com/intent/tweet?text=" +
+            encodeURIComponent(t) + "&url=" + encodeURIComponent(u),
+        telegram: (u, t) =>
+            "https://t.me/share/url?url=" +
+            encodeURIComponent(u) + "&text=" + encodeURIComponent(t),
+    };
+    links.forEach((a) => {
+        a.addEventListener("click", () => {
+            const kind = a.dataset.share || "";
+            const make = build[kind];
+            if (!make) return;
+            const url = (a.dataset.shareUrl || "").trim() || location.href;
+            const title = (a.dataset.shareTitle || "").trim() || document.title;
+            // 在默认跳转发生前改写 href，浏览器会用新值在 _blank 打开
+            a.href = make(url, title);
         });
     });
 })();
