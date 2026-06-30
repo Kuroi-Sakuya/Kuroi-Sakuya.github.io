@@ -4,6 +4,9 @@ languageCode: zh-cn
 theme: hugo-theme-stack
 title: 互联网冷冻小面包          # ← 站点标题
 copyright: 互联网冷冻小面包      # ← 页脚版权署名
+# 站点描述：用于 RSS、og:description / meta description 的全站兜底
+# （没有自己 description 的页面，如首页/分类/Timeline，分享卡片会用它）
+description: 温柔的小屋 · 普通的美少女 INFJ 研究生，在这里存下樱花、黄昏，与日常里细碎的心事。
 
 DefaultContentLanguage: zh-cn
 hasCJKLanguage: true           # 中文分词/字数统计需要
@@ -27,6 +30,8 @@ params:
     featuredImageField: image
     rssFullContent: true
     favicon: /favicon.png
+    # 同上：Stack 取 og:description 时若读 params.description，这里兜底
+    description: 温柔的小屋 · 普通的美少女 INFJ 研究生，在这里存下樱花、黄昏，与日常里细碎的心事。
 
     footer:
         since: 2026
