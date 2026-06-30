@@ -4,6 +4,7 @@
  * 2) 文章阅读进度条
  * 3) 滚动渐显
  * 4) Newsletter 订阅（POST 到 Listmonk 公共表单）
+ * 5) 复制文章链接（文章底部分享按钮）
  * （留言板 Waline 已改为复用 Stack 内置评论 partial，不在此处加载）
  */
 
@@ -169,5 +170,43 @@
             btn.disabled = false;
             btn.textContent = prev;
         }
+    });
+})();
+
+/* ---------- 5) 复制文章链接（分享按钮里的「复制链接」） ---------- */
+(function copyLink() {
+    const btns = Array.from(document.querySelectorAll<HTMLButtonElement>(".share-btn--copy"));
+    if (!btns.length) return;
+    btns.forEach((btn) => {
+        const original = btn.textContent || "复制链接";
+        let timer = 0;
+        btn.addEventListener("click", async () => {
+            const url = btn.dataset.shareUrl || location.href;
+            let ok = false;
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(url);
+                    ok = true;
+                } else {
+                    const ta = document.createElement("textarea");
+                    ta.value = url;
+                    ta.style.position = "fixed";
+                    ta.style.opacity = "0";
+                    document.body.appendChild(ta);
+                    ta.select();
+                    ok = document.execCommand("copy");
+                    document.body.removeChild(ta);
+                }
+            } catch (e) {
+                ok = false;
+            }
+            btn.textContent = ok ? "已复制 ✓" : "复制失败，手动复制吧";
+            btn.classList.toggle("is-copied", ok);
+            window.clearTimeout(timer);
+            timer = window.setTimeout(() => {
+                btn.textContent = original;
+                btn.classList.remove("is-copied");
+            }, 1800);
+        });
     });
 })();

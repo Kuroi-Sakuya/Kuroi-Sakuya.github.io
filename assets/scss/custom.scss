@@ -505,3 +505,40 @@ main.main { gap: var(--section-separation); }
 .newsletter-msg.is-ok { color: var(--accent-color-darker); }
 .newsletter-msg.is-err { color: #d6536a; }
 :root[data-scheme="dark"] .newsletter-msg.is-err { color: #ff9bae; }
+
+/* =========================================================
+   文章底部·分享按钮（描边胶囊，沿用底部标签语汇；卡片同 Newsletter）
+   ========================================================= */
+.article-share {
+    margin-top: var(--section-separation);
+    padding: 1.8rem 2.4rem;
+    background: var(--card-background);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--shadow-l1);
+    display: flex; align-items: center; flex-wrap: wrap; gap: 1rem 1.4rem;
+}
+.article-share__label {
+    display: inline-flex; align-items: center; gap: .6rem;
+    font-size: 1.5rem; font-weight: 600; color: var(--card-text-color-main);
+    margin-right: .4rem;
+}
+.article-share__icon { color: var(--accent-color); flex: 0 0 auto; }
+.article-share__btns { display: flex; flex-wrap: wrap; gap: 1rem; }
+.share-btn {
+    display: inline-flex; align-items: center;
+    background-color: transparent; color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+    padding: .5rem 1.4rem; border-radius: 999px;
+    font-size: 1.4rem; line-height: 1.4; font-family: inherit;
+    cursor: pointer; transition: all .2s ease;
+}
+.share-btn:hover {
+    background-color: var(--accent-color); color: var(--accent-color-text);
+    transform: translateY(-2px);
+}
+.share-btn--copy.is-copied {
+    background-color: var(--accent-color); color: var(--accent-color-text);
+}
+@media (max-width: 540px) {
+    .article-share__label { flex-basis: 100%; margin-right: 0; }
+}
