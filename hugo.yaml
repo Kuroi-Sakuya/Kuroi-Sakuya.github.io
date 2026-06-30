@@ -110,7 +110,7 @@ params:
     #   把 xxx 填到 goatcounter 即自动启用，无需改 VPS。
     # Umami（可选，自托管）：填 src（script.js 地址）+ websiteId 两项才启用。
     analytics:
-        goatcounter: ""        # 你的 GoatCounter 代号（xxx → xxx.goatcounter.com）
+        goatcounter: "kuroisakuya"   # → kuroisakuya.goatcounter.com（已启用）
         umami:
             src: ""            # 例：https://umami.你的域名/script.js
             websiteId: ""
