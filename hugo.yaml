@@ -92,13 +92,14 @@ params:
             card: summary_large_image
 
     # 没有封面的页面（首页 / About / 列表 / hello 等）分享时的默认 OG 图。
-    # local: true → Stack 用 resources.GetMatch 在 assets/ 下找，故 src 写相对 assets 的路径。
+    # 用 static/ 下的固定文件 + 绝对地址（local: false → src 直接当 og:image 用），
+    # 不依赖 Hugo 资源解析，抓取方一定拿得到。换自定义域名时记得同步改这里的域名。
     # 有封面的文章仍优先用自己的封面（见 Stack head/opengraph 逻辑）。
     defaultImage:
         opengraph:
             enabled: true
-            local: true
-            src: img/og-default.png
+            local: false
+            src: https://kuroi-sakuya.github.io/og-default.png
 
     colorScheme:
         toggle: true
