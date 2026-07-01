@@ -4,7 +4,7 @@
 > 主题概念「**咲夜·花开的夜**」——浅色＝日落樱花，深色＝雨夜霓虹。
 > 本文件记录**当前架构现状**，便于自己/未来维护者快速理解。配套备忘见根目录 `CLAUDE.md`。
 
-最后更新：随 `ee077a2`（Newsletter 单次确认文案）。
+最后更新：随 `9202448`（默认分享图 + 文章分享按钮 + GoatCounter 统计 + 分享描述）。
 
 ---
 
@@ -47,9 +47,10 @@
 │   ├── 404.html
 │   └── partials/
 │       ├── header/banner.html            # 顶部导航 banner（取代主题左侧栏）
-│       ├── head/custom.html              # 自定义字体加载（jsDelivr）
+│       ├── head/custom.html              # 自定义字体加载（jsDelivr）+ 统计脚本（config 驱动）
 │       ├── footer/components/custom-font.html  # 留空＝禁用主题默认 Google Fonts
 │       ├── home/{hero,timeline,guestbook}.html # 首页三段
+│       ├── article/components/share.html # 文章底部分享按钮（复制/微博/X/Telegram）
 │       └── newsletter.html               # 邮件订阅复用组件
 │
 ├── assets/
@@ -58,6 +59,7 @@
 │
 ├── static/
 │   ├── favicon.png
+│   ├── og-default.png            # 默认分享图（1200×630 日落樱花渐变，无封面页面回退用）
 │   └── memorial/                 # 旧站「你也喜欢小鱼吗」存档，完整保留但全站不链接
 │
 └── themes/hugo-theme-stack/      # 主题 submodule（只读，勿改）
@@ -87,7 +89,7 @@
 | 首页 | home | `layouts/index.html` | 多屏：hero → timeline → guestbook |
 | 分类总览 `/categories/` | taxonomy | `_default/list.html`（`taxonomy` 分支）| 分类卡片网格 + **底部标签云**（仅此页）|
 | 分类/标签详情 `/categories/x/`、`/tags/x/` | term | `_default/list.html`（`term` 分支）| 标题 + 右上「返回」（按 `.Type` 动态回 `/categories/` 或 `/tags/`）+ **default 卡片列表**（带封面 banner）|
-| 文章 `/p/<slug>/` | page | `_default/single.html` | 右上「返回」→ 所属分类；封面 + 正文 + 评论 + 订阅 |
+| 文章 `/p/<slug>/` | page | `_default/single.html` | 右上「返回」→ 所属分类；封面 + 正文 + **分享按钮** + 评论 + 订阅 |
 | 时间线 `/archives/` | page(archives) | `_default/archives.html` | 纯文字竖向时间轴（年份→标题），无封面 |
 | 普通 section 兜底 | section | `_default/list.html`（else 分支）| 同 term 的 default 卡片列表 |
 
@@ -124,11 +126,13 @@ banner 复用主题 JS 所需的元素 ID：`#toggle-menu` / `#main-menu`（`men
 
 ## 6. 前端交互（`assets/ts/custom.ts`）
 
-四个独立 IIFE：
+六个独立 IIFE：
 1. **heroTyper**：调一言诗词 API（`v1.hitokoto.cn?c=i`，每次不同、CORS、国内可达）↔ 签名「二象无常，遇而无往」，打字 + 删除循环；失败回退本地诗句表。
 2. **readingProgress**：文章页顶部阅读进度条。
 3. **scrollReveal**：`.reveal` 元素进入视口加 `.revealed` 渐显；`prefers-reduced-motion` 下直接显示。
 4. **newsletter**：订阅表单 `fetch` POST 到 Listmonk `/subscription/form`（表单编码＝简单请求免预检），蜜罐反垃圾，原地提示成功/失败。
+5. **copyLink**：分享按钮里的「复制链接」，`navigator.clipboard` 优先、`execCommand` 兜底，复制后短暂反馈「已复制 ✓」。
+6. **shareLinks**：点击微博/X/Telegram 时用页面真实 `location.href` + 标题**重建 href**，保证参数一定带上（不依赖服务端 `querify` 渲染）。
 
 ---
 
@@ -153,7 +157,7 @@ banner 复用主题 JS 所需的元素 ID：`#toggle-menu` / `#main-menu`（`men
 - 订阅组件仅在「有留言板」的页面、且 `newsletter` 三项齐全时渲染（文章页 + 首页）。
 - 列表设为 **single opt-in**（填邮箱即入库可群发，无需确认邮件）；发件用真域名 `11100117.xyz`（应配 SPF/DKIM/DMARC）。
 - 跨域：前端要读到提交结果，Listmonk 反代需放行 `Access-Control-Allow-Origin: https://kuroi-sakuya.github.io`。
-- ⚠️ **订阅者名单与评论数据只存在 VPS**，是全站最难重建的资产（详见第 10 节优化）。
+- ⚠️ **订阅者名单与评论数据只存在 VPS**，是全站最难重建的资产（异地自动备份＝最高优先待办，见 `CLAUDE.md`）。
 
 ---
 
@@ -169,6 +173,23 @@ banner 复用主题 JS 所需的元素 ID：`#toggle-menu` / `#main-menu`（`men
 
 ---
 
-## 10. 归档
+## 10. 分享与统计（OpenGraph / 分析）
+
+### 10.1 分享卡片（OpenGraph）
+- **默认分享图**：`static/og-default.png`（1200×630 日落樱花→雨夜渐变，纯算法生成、无字体依赖）。经 `hugo.yaml → params.defaultImage.opengraph` 挂上，用 `local:false` + **绝对地址** `https://kuroi-sakuya.github.io/og-default.png`（static 根路径直供，不走 Hugo 资源解析 → 抓取方一定拿得到）。有封面的文章仍优先用自己的封面。**换自定义域名时记得同步改这里的域名。**
+- **描述兜底**：`content/_index.md` 与 `hugo.yaml`（top-level `description` + `params.description`）都填了站点描述，否则首页/列表页 `og:description` 为空、分享卡片没文字。文章/About 各自 front matter 有 `description`。
+- ⚠️ **国内平台（微信/微博）**：其爬虫未必能抓到 `github.io`，即便 OG 标签齐全预览也可能空白——属 github.io 国内可达性问题，需自定义域名 + 国内可达托管/CDN，非标签能修。
+
+### 10.2 分享按钮（文章底部）
+- 模板 `layouts/partials/article/components/share.html`：复制链接 / 微博 / X / Telegram，描边胶囊样式；仅文章（`.Type == post`）显示，front matter `share: false` 可单篇关闭。
+- `href` 服务端渲染做**无 JS 兜底**；`custom.ts → shareLinks` 点击时用页面真实 `location.href` + 标题重建 href，确保参数一定带上（此前纯靠服务端渲染导致 X 发帖框空白，已修）。
+
+### 10.3 访问统计
+- `hugo.yaml → params.analytics`：`goatcounter`（托管、隐私友好）+ 可选 `umami`（自托管）。`head/custom.html` 末尾按 config 输出脚本，**留空则不输出任何脚本、零隐私影响**。
+- 现启用 **GoatCounter**，代号 `kuroisakuya` → 后台 `https://kuroisakuya.goatcounter.com`。托管，无需 VPS。
+
+---
+
+## 11. 归档
 
 `static/memorial/` 是旧站「你也喜欢小鱼吗」的完整存档，**保留但全站任何 UI 都不链接它**；除非主人明确要求，不要再加指向 `/memorial/` 的入口。
