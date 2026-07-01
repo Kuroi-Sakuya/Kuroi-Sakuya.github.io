@@ -34,6 +34,7 @@
 ├── CLAUDE.md                     # 给维护者/AI 的备忘（风格偏好、约定、注意事项）
 ├── docs/ARCHITECTURE.md          # 本文件
 ├── .github/workflows/hugo.yml    # 构建 + 部署工作流
+├── archetypes/post/index.md      # 发文脚手架：hugo new post/<名字> 生成文章 bundle
 │
 ├── content/                      # 内容
 │   ├── _index.md                 # 首页 front matter
@@ -139,6 +140,7 @@ banner 复用主题 JS 所需的元素 ID：`#toggle-menu` / `#main-menu`（`men
 ## 7. 内容模型
 
 - **文章**＝page bundle：`content/post/<slug>/index.md`，front matter：`title/date/slug/categories/tags`，可选 `image:`（封面图放同目录，`params.featuredImageField: image`）。
+- **发新文**：`hugo new post/<英文或拼音名>` 按 `archetypes/post/index.md` 生成好 front matter 的 bundle（文件夹名＝slug）；改中文标题、填 `description`、需要封面再取消 `image` 注释。archetypes 不参与站点构建。
 - **封面图分工**：传图→列表页矮 banner（`height: clamp(14rem,20vw,19rem)`，只露一条）+ 文章页完整封面（圆角+淡入+Ken-Burns）；首页与时间线**不放图**；不传图→纯文字卡片，尺度一致。
 - **分类 vs 标签（角色分工，不冗余）**：
   - **分类 Category**＝大栏目/类型（导航主结构，实心 chip，一篇通常一个）。
