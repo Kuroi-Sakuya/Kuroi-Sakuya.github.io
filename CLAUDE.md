@@ -9,7 +9,8 @@ Kuroi-Sakuya 的个人博客，部署在 GitHub Pages（`https://kuroi-sakuya.gi
 - 本地构建：`hugo --gc --minify`。
 
 ## 目录约定
-- 文章：`content/post/<slug>/index.md`（front matter 带 title/date/categories/tags，可选 `image:` 封面）。
+- 文章：`content/post/<slug>/index.md`（front matter 带 title/date/slug/categories/tags，可选 `image:` 封面）。
+  - **发新文用脚手架**：`hugo new post/<英文或拼音名>`（这个名就是 slug → `/p/<slug>/`），会按 `archetypes/post/index.md` 生成好 front matter 的文章 bundle；再把标题改中文、填 `description`，要封面就把图放进该文件夹并取消 `image` 注释。
 - 页面：`content/page/{about,archives,search,links}/`。
 - `static/memorial/`：旧站「你也喜欢小鱼吗」的存档，**完整保留但不在主站任何 UI 里链接它**。除非主人明确要求，不要再加指向 `/memorial/` 的入口。
 
